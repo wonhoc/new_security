@@ -1,0 +1,42 @@
+server:
+  port: 8080
+
+jwt:
+  secret: F6E7DD9D6D33743E5BF52CE21E4D1B9BCD66D1C99683B71C2743D6869E
+
+spring:
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://172.16.0.71:32000/template?serverTimezone=Asia/Seoul
+    username: root
+    password: password
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.MySQL8Dialect
+      javax:
+        persistence:
+          validation:
+            mode: none
+    show-sql: true
+
+app:
+  jwt:
+    secret: F6E7DD9D6D33743E5BF52CE21E4D1B9BCD66D1C99683B71C2743D6869E
+    expirationMs:
+      accessToken: 1800000     # 30?
+      refreshToken: 604800000  # 7?
+    tokenHeader:
+      accessToken: Authorization
+      refreshToken: Authorization-Refresh
+    prefix: "Bearer "
+  member:
+    loginfailcount: 5
+    loginExpiryDay: 365
+  loginUrl: /api/login

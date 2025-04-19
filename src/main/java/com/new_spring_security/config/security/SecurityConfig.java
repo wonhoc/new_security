@@ -53,12 +53,11 @@ public class SecurityConfig {
         http.headers((headers) -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin));
         http.sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
-        // JWT 인증 필터 추가
-        http.addFilterBefore(new JwtOncePerRequestFilter(jwtTokenProvider, userService, env), UsernamePasswordAuthenticationFilter.class);
-
         // 로그인 인증 필터 추가
         http.addFilterBefore(getAuthenticationFilter(authenticationManager), UsernamePasswordAuthenticationFilter.class);
 
+        // JWT 인증 필터 추가
+        // http.addFilterBefore(new JwtOncePerRequestFilter(jwtTokenProvider, userService, env), UsernamePasswordAuthenticationFilter.class);
 
         // 인가 처리
         http.authorizeHttpRequests((auth) -> auth

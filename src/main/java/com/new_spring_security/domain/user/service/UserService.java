@@ -39,10 +39,12 @@ public class UserService {
                 .name(joinUserReqDto.getName())
                 .role(UserRoles.ROLE_MEMBER)
                 .isNonLock(true)
+                .isEnabled(true)
                 .loginFailCount(0)
                 .lastLoginDtm(newDateTime)
                 .lastUpdatePwDtm(currentDateTime)
                 .credentialsExpiryDate(newDateTime)
+                .accountExpiryDate(newDateTime)
                 .build();
 
         userRepository.save(joinUser);

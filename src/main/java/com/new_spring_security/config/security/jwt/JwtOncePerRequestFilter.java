@@ -31,12 +31,20 @@ import java.io.IOException;
  * version  1.0
  */
 @RequiredArgsConstructor
-@Component
 public class JwtOncePerRequestFilter extends OncePerRequestFilter {
 
     private final JwtTokenProvider jwtTokenProvider;
     private final UserService userService;
     private final Environment env;
+
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        String path = request.getRequestURI();
+        return path.contains("/swagger-ui") ||
+                path.contains("/v3/api-docs") ||
+                path.contains("/swagger-resources") ||
+                path.contains("/webjars");
+    }
 
     @Override
     protected void doFilterInternal(
@@ -57,7 +65,7 @@ public class JwtOncePerRequestFilter extends OncePerRequestFilter {
                 // Access Token이 유효하면 그대로 인증 처리
                 claims = jwtTokenProvider.getClaimsByToken(accessToken);
 
-            // Access Token이 만료되었을 경우, Refresh Token으로 새로운 Access Token 발급
+                // Access Token이 만료되었을 경우, Refresh Token으로 새로운 Access Token 발급
             } else if (jwtTokenProvider.validateToken(refreshToken)) {
 
                 LoginResDto loginResDto = userService.getUserByRefreshToken(refreshToken);
